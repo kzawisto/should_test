@@ -43,14 +43,14 @@ class ANumpyArrayShould(Matching):
             one_and_other + " are equal" + extramessage
         )
     def be_equal_to(self, other):
-        equals = self.num == other
+        equals = (self.num != other) | (numpy.isnan(self.num) & numpy.isan(other))
         return self._be_equal_to_general(
-            self.num == other, other, ".", "!="
+            equals, other, ".", "!="
         )
 
     def all_be_equal_to(self, other):
 
-        equals = self.num != other
+        equals = (self.num != other) | (self.num.is_nan() & other.is_nan())
         result = equals.any()
         one_and_other = "{one} is not all equal to {other}".format(self.num, other)
         message = [one_and_other] + \
